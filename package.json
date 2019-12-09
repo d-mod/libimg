@@ -1,15 +1,19 @@
 {
   "name": "libimg",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "",
-  "main": "src/index.js",
-  "scripts": {},
+  "main": "dist/index.js",
+  "scripts": {
+    "prepare": "npm run build",
+    "build": "babel ./src --out-dir ./dist"
+  },
   "keywords": [],
   "author": "Kritsu",
   "license": "ISC",
   "dependencies": {},
   "files": [
-    "src/**"
+    "src/",
+    "dist/"
   ],
   "devDependencies": {
     "babel-cli": "^6.26.0",
