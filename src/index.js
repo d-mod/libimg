@@ -6,4 +6,7 @@ export * from "./stream"
 
 export * from "./model"
 
+export * from "./constants"
+
 export {merge} from "./merge"
+
