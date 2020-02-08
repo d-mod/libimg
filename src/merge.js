@@ -149,8 +149,8 @@ export function draw(width, height, list = []) {
 
 
 function compare(a, b) {
-    var index1 = indexOf(a.path);
-    var index2 = indexOf(b.path);
+    const index1 = indexOf(a.path)
+    const index2 = indexOf(b.path)
     if (index1 === index2) {
         return 0;
     }

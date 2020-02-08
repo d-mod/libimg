@@ -43,8 +43,9 @@ function sixth(item) {
     let base = second(item)
     return function () {
         let paletteCount = palettes.length
+        this.writeNumber(paletteCount)
         for (let i = 0; i < paletteCount; i++) {
-            this.writeNumber(palettes[i].length)
+            this.writeNumber(palettes[i].length / 4)
             this.write(palettes[i])
         }
         base.call(this)

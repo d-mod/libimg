@@ -100,6 +100,8 @@ function convertFromPalette(data, palette) {
     for (let i = 0; i < len; i++) {
         let index = data[i] % count
         let color = palette.slice(index * 4, (index + 1) * 4)
+        let [b, g, r, a] = color
+        color = Buffer.from([r, g, b, a])
         buf.push(color)
     }
     return Buffer.concat(buf)
@@ -129,8 +131,6 @@ export class Sprite {
 
     decode() {
         let {data, colorBits, compressMode, palette} = this
-
-
         if (compressMode === COMPRESS_ZLIB) {
             data = zlib.inflateSync(data)
         }

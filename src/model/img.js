@@ -19,11 +19,11 @@ export default class Img {
             }
             let sprite = new Sprite(e)
             let palettes = this.palettes
-            let index = this.paletteIndex
+            const parent = this
             Object.defineProperty(sprite, "palette", {
                 get() {
-                    if (index < palettes.length) {
-                        return palettes[index]
+                    if (parent.paletteIndex < palettes.length) {
+                        return palettes[parent.paletteIndex]
                     }
                     return null
                 }
@@ -41,12 +41,11 @@ export default class Img {
     }
 
     decode(index) {
-
+        return this.sprites[index].decode()
     }
 
     static create(options) {
-        let img = new Img(options)
-        return img
+        return new Img(options)
     }
 
 }

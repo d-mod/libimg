@@ -99,7 +99,7 @@ export class Extract extends Writable {
         for (let i = 0; i < list.length; i++) {
             ms.reset(list[i].offset)
             let body = ms.handle(readImg)
-            Object.assign(list[i], body)
+            list[i] = Object.assign(body, list[i])
         }
 
         return list

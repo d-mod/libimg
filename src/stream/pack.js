@@ -4,6 +4,7 @@ import crypto from "crypto"
 import {LINK} from "../constants/color-bits"
 import {IMG_HEADER} from "../constants/define"
 import {createEncoder} from "../handler/encoder"
+import {VER_06} from "../constants"
 
 
 function writePath(path) {
@@ -39,6 +40,7 @@ export class Pack extends Transform {
         this.list.push(...item)
     }
 
+
     writeObject(define, obj = {}) {
         Object.entries(define).forEach(([key, value]) => {
             this[`write${value}`](obj[key])
@@ -64,17 +66,22 @@ export class Pack extends Transform {
 
 
     finalize() {
-
-
         for (let img of this.list) {
             let indexLength = 0
             let dataLength = 0
             for (let sprite of img.sprites) {
-                if (sprite.colorBits === LINK) {
-                    indexLength += 8
-                } else {
-                    indexLength += 36
+                indexLength += 8
+                if (sprite.colorBits !== LINK) {
+                    indexLength += 28
                     dataLength += sprite.data.length
+                }
+            }
+            if (img.version === VER_06) {
+                dataLength += 4
+            }
+            if (img.palettes) {
+                for (let palette of img.palettes) {
+                    dataLength += palette.length + 4
                 }
             }
             img.indexLength = indexLength
@@ -118,6 +125,7 @@ export class Pack extends Transform {
             this.writeObject(IMG_HEADER, obj)
             createEncoder(item).apply(this)
         }
+        this.end()
     }
 
     _transform(chunk, encoding, callback) {

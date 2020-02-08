@@ -7,16 +7,6 @@ import {ARGB_8888, LINK} from "../constants/color-bits"
 import {SPRITE_BODY} from "../constants/define"
 import {COMPRESS_NONE} from "../constants/compress-mode"
 
-function readPalette() {
-    let paletteSize = this.readNumber()
-    let palettes = new Array(paletteSize)
-    for (let i = 0; i < paletteSize; i++) {
-        let [r, g, b, a] = this.read(4)
-        palettes[i] = Buffer.from([b, g, r, a])
-    }
-    return Buffer.concat(palettes)
-}
-
 
 function second({count}) {
     return function () {
@@ -49,7 +39,8 @@ function second({count}) {
 function fourth({count}) {
     let base = second({count})
     return function () {
-        let palette = this.handle(readPalette)
+        let paletteSize = this.readNumber()
+        let palette = this.read(paletteSize)
 
         let palettes = [palette]
 
@@ -65,7 +56,8 @@ function sixth({count}) {
         let paletteCount = this.readNumber()
         let palettes = []
         for (let i = 0; i < paletteCount; i++) {
-            let palette = this.handle(readPalette)
+            let paletteSize = this.readNumber()
+            let palette = this.read(paletteSize * 4)
             palettes.push(palette)
         }
         let body = base.call(this)

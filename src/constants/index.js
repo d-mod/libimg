@@ -10,4 +10,6 @@ export * from "./compress-mode"
 
 export * from "./color-bits"
 
+export * from "./define"
+
 
