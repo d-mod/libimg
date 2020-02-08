@@ -51,7 +51,7 @@ export class Merge {
                 if (source.frameHeight > frameHeight) {
                     frameHeight = source.frameHeight;
                 }
-                if (source.width * source.height === 1 && source.compressMode === COMPRESS_NONE) {
+                if (source.width * source.height === 1 && source.compressMode === CompressMode.NONE) {
                     continue
                 }
                 if (source.width + source.x > width) {
@@ -66,7 +66,7 @@ export class Merge {
                 if (source.y < y) {
                     y = source.y
                 }
-                if (source.colorBits > colorBits && source.colorBits < LINK) {
+                if (source.colorBits > colorBits && source.colorBits < ColorBits.LINK) {
                     colorBits = source.colorBits
                 }
             }
