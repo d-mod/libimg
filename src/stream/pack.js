@@ -1,10 +1,9 @@
 import {Transform} from "stream"
 import {IMG_MAGIC, IMG_PATH_KEY, NPK_MAGIC} from "../constants/magic"
 import crypto from "crypto"
-import {LINK} from "../constants/color-bits"
 import {IMG_HEADER} from "../constants/define"
 import {createEncoder} from "../handler/encoder"
-import {VER_06} from "../constants"
+import {ColorBits, ImgVersion} from "../constants"
 
 
 function writePath(path) {
@@ -71,12 +70,12 @@ export class Pack extends Transform {
             let dataLength = 0
             for (let sprite of img.sprites) {
                 indexLength += 8
-                if (sprite.colorBits !== LINK) {
+                if (sprite.colorBits !== ColorBits.LINK) {
                     indexLength += 28
                     dataLength += sprite.data.length
                 }
             }
-            if (img.version === VER_06) {
+            if (img.version === ImgVersion.VER_06) {
                 dataLength += 4
             }
             if (img.palettes) {
@@ -93,7 +92,7 @@ export class Pack extends Transform {
         let position = 52 + count * 264
         for (let i = 0; i < count; i++) {
             if (i > 0) {
-                if (this.list[i].colorBits === LINK) {
+                if (this.list[i].colorBits === ColorBits.LINK) {
                     continue;
                 }
                 position += lastLength

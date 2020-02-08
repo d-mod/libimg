@@ -1,13 +1,12 @@
 import {ByteArray} from "../stream"
-import {COMPRESS_ZLIB} from "../constants/compress-mode"
+import {ColorBits, CompressMode} from "../constants"
 import zlib from "zlib"
-import {ARGB_1555, ARGB_4444, ARGB_8888} from "../constants/color-bits"
 
 function read16BitColor(bits) {
     let a, r, g, b = 0;
     let [left, right] = this.read(2);
     switch (bits) {
-        case ARGB_1555:
+        case ColorBits.ARGB_1555:
             a = (right >> 7);
             r = (right >> 2) & 0x1f;
             g = ((left >> 5) | (right & 3) << 3);
@@ -17,7 +16,7 @@ function read16BitColor(bits) {
             g = (g << 3 | g >> 2);
             b = (b << 3 | b >> 2);
             break;
-        case ARGB_4444:
+        case ColorBits.ARGB_4444:
             a = (right & 0xf0);
             r = ((right & 0xf) << 4);
             g = (left & 0xf0);
@@ -35,7 +34,7 @@ function read32BitColor(bits) {
     let [b, g, r, a] = this.read(4)
     let left = 0, right = 0
     switch (bits) {
-        case ARGB_1555:
+        case ColorBits.ARGB_1555:
             a = (a >> 7) & 0xff
             r = (r >> 3) & 0xff
             g = (g >> 3) & 0xff
@@ -43,7 +42,7 @@ function read32BitColor(bits) {
             left = (((g & 7) << 5) | b) & 0xff
             right = ((a << 7) | (r << 2) | (g >> 3)) & 0xff
             break;
-        case ARGB_4444:
+        case ColorBits.ARGB_4444:
             left = (g | (b >> 4)) & 0xff
             right = (a | (r >> 4)) & 0xff
             break;
@@ -131,12 +130,12 @@ export class Sprite {
 
     decode() {
         let {data, colorBits, compressMode, palette} = this
-        if (compressMode === COMPRESS_ZLIB) {
+        if (compressMode === CompressMode.ZLIB) {
             data = zlib.inflateSync(data)
         }
         if (palette) {
             data = convertFromPalette(data, palette)
-        } else if (colorBits < ARGB_8888) {
+        } else if (colorBits < ColorBits.ARGB_8888) {
             data = convertTo32Bits(data, colorBits)
         }
         return data
@@ -145,13 +144,13 @@ export class Sprite {
 
     static encode(options) {
         let {compressMode, colorBits, data, palettes} = options
-        if (compressMode === COMPRESS_ZLIB) {
+        if (compressMode === CompressMode.ZLIB) {
             data = zlib.deflateSync(data)
         }
         if (palettes) {
             data = convertToPalette(data, palettes)
-            options.colorBits = ARGB_1555
-        } else if (colorBits < ARGB_8888) {
+            options.colorBits = ColorBits.ARGB_1555
+        } else if (colorBits < ColorBits.ARGB_8888) {
             data = convertTo16Bits(data, colorBits)
         }
         options.data = data

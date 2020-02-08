@@ -1,8 +1,9 @@
 {
   "name": "libimg",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "",
   "main": "dist/index.js",
+  "typings": "types/index.d.ts",
   "scripts": {
     "prepare": "npm run build",
     "build": "babel ./src --out-dir ./dist",
@@ -11,10 +12,10 @@
   "keywords": [],
   "author": "Kritsu",
   "license": "ISC",
-  "dependencies": {
-  },
+  "dependencies": {},
   "files": [
-    "dist/"
+    "dist/",
+    "types"
   ],
   "devDependencies": {
     "babel-cli": "^6.26.0",

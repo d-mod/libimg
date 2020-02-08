@@ -4,4 +4,5 @@
  **/
 export {Extract} from "./extract"
 export {Pack} from "./pack"
+export {Merge} from "./merge"
 export {ByteArray} from "./byte-array"

@@ -8,5 +8,6 @@ export * from "./model"
 
 export * from "./constants"
 
-export {merge} from "./merge"
+export {createDecoder} from "./handler/decoder"
 
+export {createEncoder} from "./handler/encoder"

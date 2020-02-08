@@ -2,15 +2,14 @@
  @author kritsu
  @date 2019/12/8 11:48
  **/
-import {VER_02, VER_04, VER_06} from "../constants/version"
-import {LINK} from "../constants/color-bits"
+import {ColorBits, ImgVersion} from "../constants"
 import {SPRITE_BODY} from "../constants/define"
 
 function second(item) {
     return function () {
         for (let sprite of item.sprites) {
             this.writeNumber(sprite.colorBits)
-            if (sprite.colorBits === LINK) {
+            if (sprite.colorBits === ColorBits.LINK) {
                 this.writeNumber(sprite.targetIndex)
                 continue
             }
@@ -18,7 +17,7 @@ function second(item) {
         }
 
         for (let sprite of item.sprites) {
-            if (sprite.colorBits === LINK) {
+            if (sprite.colorBits === ColorBits.LINK) {
                 continue
             }
             this.write(sprite.data)
@@ -54,9 +53,9 @@ function sixth(item) {
 
 
 export const Handlers = {
-    [VER_02]: second,
-    [VER_04]: fourth,
-    [VER_06]: sixth
+    [ImgVersion.VER_02]: second,
+    [ImgVersion.VER_04]: fourth,
+    [ImgVersion.VER_06]: sixth
 }
 
 

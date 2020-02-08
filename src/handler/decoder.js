@@ -2,10 +2,8 @@
  @author kritsu
  @date 2019/12/6 12:29
  **/
-import {VER_02, VER_04, VER_06} from "../constants/version"
-import {ARGB_8888, LINK} from "../constants/color-bits"
+import {ColorBits, CompressMode, ImgVersion} from "../constants"
 import {SPRITE_BODY} from "../constants/define"
-import {COMPRESS_NONE} from "../constants/compress-mode"
 
 
 function second({count}) {
@@ -16,7 +14,7 @@ function second({count}) {
             let sprite = {}
             sprite.colorBits = this.readNumber()
             sprites.push(sprite)
-            if (sprite.colorBits === LINK) {
+            if (sprite.colorBits === ColorBits.LINK) {
                 sprite.targetIndex = this.readNumber()
                 continue
             }
@@ -24,11 +22,11 @@ function second({count}) {
         }
 
         for (let sprite of sprites) {
-            if (sprite.colorBits === LINK) {
+            if (sprite.colorBits === ColorBits.LINK) {
                 continue
             }
-            if (sprite.compressMode === COMPRESS_NONE) {
-                sprite.length = sprite.width * sprite.height * (sprite.colorBits === ARGB_8888 ? 4 : 2)
+            if (sprite.compressMode === CompressMode.COMPRESS_NONE) {
+                sprite.length = sprite.width * sprite.height * (sprite.colorBits === ColorBits.ARGB_8888 ? 4 : 2)
             }
             sprite.data = this.read(sprite.length);
         }
@@ -68,9 +66,9 @@ function sixth({count}) {
 
 
 export const Handlers = {
-    [VER_02]: second,
-    [VER_04]: fourth,
-    [VER_06]: sixth
+    [ImgVersion.VER_02]: second,
+    [ImgVersion.VER_04]: fourth,
+    [ImgVersion.VER_06]: sixth
 }
 
 
