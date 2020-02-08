@@ -1,5 +1,7 @@
 declare module "libimg" {
 
+    import {Transform, Writable} from "stream"
+
     enum ColorBits {
         ARGB_1555 = 0x0e,
         ARGB_4444 = 0x0f,
@@ -54,7 +56,7 @@ declare module "libimg" {
         colorBits: ColorBits
         compressMode: CompressMode
         targetIndex: number
-        data: any
+        data: Buffer
         length: number
         width: number
         height: number
@@ -76,12 +78,12 @@ declare module "libimg" {
         length: number
     }
 
-    class Extract {
+    class Extract extends Writable {
         constructor(options)
     }
 
 
-    class Pack {
+    class Pack extends Transform {
 
         constructor(list: Img[])
 
