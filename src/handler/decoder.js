@@ -38,7 +38,7 @@ function fourth({count}) {
     let base = second({count})
     return function () {
         let paletteSize = this.readNumber()
-        let palette = this.read(paletteSize)
+        let palette = this.read(paletteSize * 4)
 
         let palettes = [palette]
 
