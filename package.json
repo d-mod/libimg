@@ -1,6 +1,6 @@
 {
   "name": "libimg",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "description": "",
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
@@ -8,7 +8,7 @@
   "typings": "dist/index.d.ts",
   "scripts": {
     "dev": "tsx ./example/index.ts",
-    "bump":"bumpp package.json",
+    "bump": "bumpp package.json",
     "build": "unbuild"
   },
   "keywords": [],
