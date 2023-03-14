@@ -18,7 +18,7 @@ export class Merge {
     }
 
     finalize() {
-        const list = this.list.reverse()
+        const list = this.list
         let count = 0
         let version = ImgVersion.VER_02
 
@@ -85,13 +85,13 @@ export class Merge {
                 if (i >= item.count) {
                     continue
                 }
-                let source = item.sprites[i]
-                let data = source.decode()
-                let {width, height} = source
+                let sprite = item.sprites[i]
+                let data = sprite.decode()
+                let {width, height} = sprite
                 images.push({
                     data,
-                    x: source.x - x,
-                    y: source.y - y,
+                    x: sprite.x - x,
+                    y: sprite.y - y,
                     width,
                     height
                 }); //绘制贴图
@@ -166,7 +166,7 @@ function compare(a, b) {
     return -1;
 }
 
-function indexOf(key) {
+export function indexOf(key) {
     key = key.substring(key.indexOf("_") + 1);
     key = key.replace(".img", ""); //去除.img后缀
     let regex = /\d+/g
@@ -179,7 +179,7 @@ function indexOf(key) {
             suf = parseInt(matches[i]);
         }
     }
-    if (queues[key]) {
+    if (queues[key] !== undefined) {
         return queues[key] + suf;
     }
     return -1;
