@@ -4,7 +4,7 @@
  **/
 import { ColorBits, ImgVersion } from "../constants";
 import { SPRITE_BODY } from "../constants/define";
-import type Img from "../model/img";
+import type { Img } from "../model";
 import type { Pack } from "../stream";
 
 function second(item: Img) {

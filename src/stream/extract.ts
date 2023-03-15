@@ -1,6 +1,6 @@
 import { Writable } from "stream";
 import type { MaybeRegex } from "maybe-types";
-import Img from "../model/img";
+import { Img } from "../model";
 import { createDecoder } from "../handler/decoder";
 import { IMG_HEADER } from "../constants/define";
 import { IMG_MAGIC, IMG_PATH_KEY, NPK_MAGIC } from "../constants/magic";
@@ -30,7 +30,7 @@ function readImg(this: ByteArray) {
   if (decode) {
     body = this.handle(decode) || [];
   }
-  return new Img(Object.assign(header, body));
+  return Object.assign(header, body);
 }
 
 function validateMatch(match: MaybeRegex | ((item: Img) => boolean)) {
@@ -95,12 +95,12 @@ export class Extract extends Writable {
         const offset = ms.readNumber();
         const length = ms.readNumber();
         const path = ms.handle(readPath);
-        list.push({ offset, length, path } as Img);
+        list.push({ offset, dataLength: length, path } as Img);
       }
     } else if (magic === IMG_MAGIC) {
       list.push({
         offset: 0,
-        length: data.length,
+        dataLength: data.length,
         path: ""
       } as Img
       );
@@ -111,7 +111,7 @@ export class Extract extends Writable {
     for (let i = 0; i < list.length; i++) {
       ms.reset(list[i].offset);
       const body = ms.handle(readImg);
-      list[i] = Object.assign(body, list[i]);
+      list[i] = new Img(Object.assign(list[i], body));
     }
 
     return list;

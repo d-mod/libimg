@@ -4,7 +4,7 @@
  **/
 
 import { Merge } from "../src";
-import type Img from "../src/model/img";
+import type { Img } from "../src/model/img";
 import { find } from "./find";
 
 const outputPath = "E:\\WeGameApps\\地下城与勇士\\ImagePacks2";

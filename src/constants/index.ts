@@ -21,7 +21,6 @@ export enum CompressMode {
   NONE = 0x05,
   ZLIB = 0x06,
   DDS_ZLIB = 0x07
-
 }
 
 export enum ImgVersion {

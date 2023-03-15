@@ -1,6 +1,6 @@
 import { ColorBits, CompressMode, ImgVersion } from "../constants";
 import { Sprite } from "../model";
-import type Img from "../model/img";
+import type { Img } from "../model/img";
 import queues from "./queues";
 
 interface MergeItem {

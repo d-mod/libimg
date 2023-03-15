@@ -13,7 +13,7 @@ export const SPRITE_BODY = {
   compressMode: NUMBER,
   width: NUMBER,
   height: NUMBER,
-  length: NUMBER,
+  dataLength: NUMBER,
   x: NUMBER,
   y: NUMBER,
   frameWidth: NUMBER,
@@ -28,3 +28,22 @@ export const IMG_HEADER = {
   count: NUMBER
 };
 
+export const DDS_HEADER = {
+  version: NUMBER,
+  type: NUMBER,
+  index: NUMBER,
+  dataLength: NUMBER,
+  uncompressedLength: NUMBER,
+  width: NUMBER,
+  height: NUMBER
+};
+
+export const TEXTURE_INFO = {
+  unknown: NUMBER,
+  index: NUMBER,
+  left: NUMBER,
+  top: NUMBER,
+  right: NUMBER,
+  bottom: NUMBER,
+  rotate: NUMBER
+};

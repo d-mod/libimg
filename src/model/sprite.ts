@@ -5,13 +5,18 @@ import type { Writable } from "stream";
 import { PNG } from "pngjs";
 import { ColorBits, CompressMode } from "../constants";
 import { ByteArray } from "../stream";
+import type { DDS, TextureInfo } from "../handler/types";
+import type { Img } from "./img";
 
 function read16BitColor(this: ReadStream, bits: ColorBits) {
+  if (bits === ColorBits.ARGB_8888) {
+    return this.read(4);
+  }
   let a = 0;
   let r = 0;
   let g = 0;
   let b = 0;
-  const [left, right] = this.read(2);
+  const [right, left] = this.read(2);
   switch (bits) {
     case ColorBits.ARGB_1555:
       a = (right >> 7);
@@ -57,6 +62,10 @@ function read32BitColor(this: ReadStream, bits: ColorBits) {
   return Buffer.from([left, right]);
 }
 
+export function toHex(color: Buffer) {
+  return color.toString("hex");
+}
+
 export function convertTo32Bits(data: Buffer, bits: ColorBits) {
   const ms = new ByteArray(data);
 
@@ -65,7 +74,7 @@ export function convertTo32Bits(data: Buffer, bits: ColorBits) {
   const buf: Buffer[] = [];
 
   for (let i = 0; i < len; i += 4) {
-    const color = ms.handle(read16BitColor, bits);
+    const color = ms.handle(read16BitColor, bits) as Buffer;
     buf.push(color);
   }
 
@@ -117,34 +126,50 @@ interface SpriteOptions extends Partial<Sprite> {
 }
 
 export class Sprite {
+  index = 0;
   data: Buffer;
-  length: number;
+  dataLength: number;
   width: number;
   height: number;
   colorBits: ColorBits;
   compressMode: CompressMode;
-  palette: Buffer;
   count: number;
-  targetIndex: number;
+  targetIndex = -1;
   frameWidth: number;
   frameHeight: number;
   x: number;
   y: number;
+
+  textureInfo?: TextureInfo;
+
+  parent?: Img;
+
+  readonly palette?: Buffer;
+
+  get texture(): DDS | null {
+    const parent = this.parent;
+    if (parent) {
+      const textures = parent.textures;
+      if (textures) {
+        return textures[this.textureInfo?.index ?? 0];
+      }
+    }
+    return null;
+  }
 
   constructor(options: SpriteOptions) {
     this.width = options.width ?? 1;
     this.height = options.height ?? 1;
     this.colorBits = options.colorBits ?? ColorBits.ARGB_1555;
     this.compressMode = options.compressMode ?? CompressMode.NONE;
-    this.length = options.length ?? 0;
+    this.dataLength = options.dataLength ?? 0;
     this.count = options.count ?? 1;
-    this.targetIndex = options.targetIndex ?? 0;
+    this.targetIndex = options.targetIndex ?? -1;
     this.frameWidth = options.frameWidth ?? 1;
     this.frameHeight = options.frameHeight ?? 1;
     this.x = options.x ?? 0;
     this.y = options.y ?? 0;
     this.data = options.data ?? Buffer.alloc(this.width * this.height * 4);
-    this.palette = options.palette ?? Buffer.alloc(0);
   }
 
   decode() {
@@ -153,11 +178,14 @@ export class Sprite {
     if (compressMode === CompressMode.ZLIB) {
       data = zlib.inflateSync(data);
     }
-    if (palette) {
+    if (palette?.length) {
       data = convertFromPalette(data, palette);
     } else if (colorBits < ColorBits.ARGB_8888) {
       data = convertTo32Bits(data, colorBits);
+    } else {
+      data = convertArbgToRgba(data);
     }
+
     return data;
   }
 
@@ -171,17 +199,23 @@ export class Sprite {
       data = convertTo16Bits(data, colorBits);
     }
     options.data = data;
-    options.length = data.length;
+    options.dataLength = data.length;
     return new Sprite(options);
   }
 
-  toPng(target: string | Writable) {
-    target = typeof target === "string" ? createWriteStream(target) : target;
-    const width = this.width;
-    const height = this.height;
-    const data = convertArbgToRgba(this.decode());
-    const png = new PNG({ width, height, filterType: 4 });
-    png.data = data;
-    png.pack().pipe(target);
+  toPng(target: string | Writable): Promise < void > {
+    return new Promise((resolve, reject) => {
+      const data = this.decode();
+      const width = this.width;
+      const height = this.height;
+      target = typeof target === "string" ? createWriteStream(target) : target;
+
+      const png = new PNG({
+        width,
+        height
+      });
+      png.data = data;
+      png.pack().pipe(target).on("finish", resolve).on("error", reject);
+    });
   }
 }

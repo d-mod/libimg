@@ -4,7 +4,7 @@ import { IMG_MAGIC, IMG_PATH_KEY, NPK_MAGIC } from "../constants/magic";
 import { IMG_HEADER } from "../constants/define";
 import { createEncoder } from "../handler/encoder";
 import { ColorBits, ImgVersion } from "../constants";
-import type Img from "../model/img";
+import type { Img } from "../model";
 import type { DefineType } from "./../constants/define";
 
 function writePath(path: string) {
@@ -81,7 +81,7 @@ export class Pack extends Transform {
         }
       }
       img.indexLength = indexLength;
-      img.length = dataLength + indexLength + 32;
+      img.dataLength = dataLength + indexLength + 32;
     }
 
     const count = this.list.length;
@@ -92,7 +92,7 @@ export class Pack extends Transform {
         position += lastLength;
       }
       this.list[i].offset = position;
-      lastLength = this.list[i].length;
+      lastLength = this.list[i].dataLength;
     }
 
     this.pause();
@@ -102,7 +102,7 @@ export class Pack extends Transform {
 
     for (const item of this.list) {
       this.writeNumber(item.offset);
-      this.writeNumber(item.length);
+      this.writeNumber(item.dataLength);
       this.write(writePath(item.path));
     }
 

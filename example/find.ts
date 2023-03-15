@@ -10,7 +10,7 @@ import qs from "querystring";
 import path from "path";
 import { Extract } from "../src";
 
-import type Img from "../src/model/img";
+import type { Img } from "../src/model/img";
 
 export function find(outputPath: string, profession: string, code: string, excludes: string[] = []) {
   const parts = qs.parse(code) as Record<string, string>;
