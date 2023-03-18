@@ -104,9 +104,7 @@ function convertFromPalette(data: Buffer, palette: Buffer) {
 
   for (let i = 0; i < len; i++) {
     const index = data[i] % count;
-    let color = palette.slice(index * 4, (index + 1) * 4);
-    const [b, g, r, a] = color;
-    color = Buffer.from([r, g, b, a]);
+    const color = palette.slice(index * 4, (index + 1) * 4);
     buf.push(color);
   }
   return Buffer.concat(buf);
@@ -173,14 +171,16 @@ export class Sprite {
   }
 
   decode() {
-    const { colorBits, compressMode, palette } = this;
+    const { colorBits, compressMode } = this;
     let data = this.data;
     if (compressMode === CompressMode.ZLIB) {
       data = zlib.inflateSync(data);
+      if (this.palette?.length) {
+        data = convertFromPalette(data, this.palette);
+        return data;
+      }
     }
-    if (palette?.length) {
-      data = convertFromPalette(data, palette);
-    } else if (colorBits < ColorBits.ARGB_8888) {
+    if (colorBits < ColorBits.ARGB_8888) {
       data = convertTo32Bits(data, colorBits);
     } else {
       data = convertArbgToRgba(data);
@@ -203,11 +203,11 @@ export class Sprite {
     return new Sprite(options);
   }
 
-  toPng(target: string | Writable): Promise < void > {
+  toPng(target: string | Writable): Promise<void> {
+    const data = this.decode();
+    const width = this.width;
+    const height = this.height;
     return new Promise((resolve, reject) => {
-      const data = this.decode();
-      const width = this.width;
-      const height = this.height;
       target = typeof target === "string" ? createWriteStream(target) : target;
 
       const png = new PNG({

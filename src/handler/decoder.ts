@@ -2,7 +2,7 @@
  @author kritsu
  @date 2019/12/6 12:29
  **/
-import { ColorBits, ImgVersion } from "../constants";
+import { ColorBits, CompressMode, ImgVersion } from "../constants";
 import { DDS_HEADER, SPRITE_BODY, TEXTURE_INFO } from "../constants/define";
 import type { ByteArray } from "../stream";
 import type { Img } from "../model";
@@ -12,9 +12,9 @@ import type { Sprite } from "./../model/sprite";
 function second(img: Img) {
   return function (this: ByteArray) {
     const sprites: Sprite[] = [];
-    const count = img.count;
+    const count = img.count ?? 0;
 
-    for (let i = 0; i < count || 0; i++) {
+    for (let i = 0; i < count; i++) {
       const sprite = {} as Sprite;
       sprite.index = i;
       sprite.colorBits = this.readNumber();
@@ -25,10 +25,12 @@ function second(img: Img) {
       }
       this.readObject(SPRITE_BODY, sprite);
     }
-
     for (const sprite of sprites) {
       if (sprite.colorBits === ColorBits.LINK) {
         continue;
+      }
+      if (sprite.compressMode === CompressMode.NONE) {
+        sprite.dataLength = sprite.width * sprite.height * ((sprite.colorBits === ColorBits.ARGB_8888) ? 4 : 2);
       }
       sprite.data = this.read(sprite.dataLength);
     }
