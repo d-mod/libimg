@@ -173,7 +173,7 @@ export class Sprite {
   decode() {
     const { colorBits, compressMode } = this;
     let data = this.data;
-    if (compressMode === CompressMode.ZLIB) {
+    if (compressMode === CompressMode.ZLIB && this.width * this.height > 1) {
       data = zlib.inflateSync(data);
       if (this.palette?.length) {
         data = convertFromPalette(data, this.palette);
