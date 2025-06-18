@@ -1,11 +1,11 @@
 /***
- @author kritsu
+ @author chizukicn
  @date 2019/12/9 21:57
  **/
 
-export * from "./magic";
-
 export * from "./define";
+
+export * from "./magic";
 
 export enum ColorBits {
   ARGB_1555 = 0x0E,
@@ -30,4 +30,3 @@ export enum ImgVersion {
   VER_05 = 0x05,
   VER_06 = 0x06
 }
-

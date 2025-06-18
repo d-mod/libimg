@@ -1,46 +1,50 @@
 {
   "name": "libimg",
   "version": "0.2.3",
+  "packageManager": "pnpm@10.12.1+sha512.f0dda8580f0ee9481c5c79a1d927b9164f2c478e90992ad268bbb2465a736984391d6333d2c327913578b2804af33474ca554ba29c04a8b13060a717675ae3ac",
   "description": "",
-  "main": "dist/index.cjs",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
-  "scripts": {
-    "dev": "tsx ./example/index.ts",
-    "bump": "bumpp package.json",
-    "build": "unbuild",
-    "stub": "unbuild --stub",
-    "prepare": "simple-git-hooks"
-  },
-  "keywords": [],
   "author": "Chizuki",
   "license": "MIT",
+  "keywords": [],
+  "exports": {
+    ".": "./dist/index.mjs",
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
   "files": [
     "dist/"
   ],
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "eslint --fix"
-    ]
+  "scripts": {
+    "dev": "tsx ./example/index.ts",
+    "lint": "eslint --cache",
+    "bump": "bumpp package.json",
+    "build": "tsdown",
+    "prepare": "simple-git-hooks"
+  },
+  "dependencies": {
+    "maybe-types": "^0.2.0",
+    "pngjs": "^7.0.0"
+  },
+  "devDependencies": {
+    "@curev/eslint-config": "^0.5.0",
+    "@types/node": "^24.0.3",
+    "@types/pngjs": "^6.0.5",
+    "bumpp": "^10.1.1",
+    "eslint": "^9.29.0",
+    "lint-staged": "^16.1.2",
+    "simple-git-hooks": "^2.13.0",
+    "tsdown": "^0.12.8",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3"
   },
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"
   },
-  "devDependencies": {
-    "@curev/eslint-config": "^0.0.7",
-    "@types/node": "^13.7.0",
-    "@types/pngjs": "^6.0.1",
-    "bumpp": "^9.0.0",
-    "eslint": "^8.36.0",
-    "husky": "^8.0.3",
-    "lint-staged": "^13.2.0",
-    "simple-git-hooks": "^2.8.1",
-    "tsx": "^3.12.5",
-    "typescript": "^4.9.5",
-    "unbuild": "^1.1.2"
-  },
-  "dependencies": {
-    "maybe-types": "^0.0.3",
-    "pngjs": "^7.0.0"
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix"
+    ]
   }
 }

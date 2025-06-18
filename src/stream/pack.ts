@@ -1,11 +1,12 @@
-import { Transform } from "stream";
-import crypto from "crypto";
-import { IMG_MAGIC, IMG_PATH_KEY, NPK_MAGIC } from "../constants/magic";
-import { IMG_HEADER } from "../constants/define";
-import { createEncoder } from "../handler/encoder";
-import { ColorBits, ImgVersion } from "../constants";
 import type { Img } from "../model";
 import type { DefineType } from "./../constants/define";
+import { Buffer } from "node:buffer";
+import crypto from "node:crypto";
+import { Transform } from "node:stream";
+import { ColorBits, ImgVersion } from "../constants";
+import { IMG_HEADER } from "../constants/define";
+import { IMG_MAGIC, IMG_PATH_KEY, NPK_MAGIC } from "../constants/magic";
+import { createEncoder } from "../handler/encoder";
 
 function writePath(path: string) {
   const data = Buffer.alloc(256);
@@ -23,7 +24,7 @@ function crc32(data: Buffer) {
 }
 
 /***
- @author kritsu
+ @author chizukicn
  @date 2019/12/6 16:56
  **/
 export class Pack extends Transform {

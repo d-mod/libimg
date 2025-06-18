@@ -1,14 +1,16 @@
-/***
- @author kritsu
- @date 2019/12/6 12:29
- **/
+import type { Buffer } from "node:buffer";
+import type { Img } from "../model";
+import type { ByteArray } from "../stream";
+import type { Sprite } from "./../model/sprite";
+import type { DDS, TextureInfo } from "./types";
+
 import { ColorBits, CompressMode, ImgVersion } from "../constants";
 import { DDS_HEADER, SPRITE_BODY, TEXTURE_INFO } from "../constants/define";
-import type { ByteArray } from "../stream";
-import type { Img } from "../model";
-import type { DDS, TextureInfo } from "./types";
-import type { Sprite } from "./../model/sprite";
 
+/***
+ @author chizukicn
+ @date 2019/12/6 12:29
+ **/
 function second(img: Img) {
   return function (this: ByteArray) {
     const sprites: Sprite[] = [];
@@ -69,7 +71,6 @@ function sixth(img: Img) {
 /**
  *
  * @param img
- * @returns
  */
 export function fifth(img: Img) {
   return function (this: ByteArray) {

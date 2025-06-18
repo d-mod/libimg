@@ -1,12 +1,13 @@
-import zlib from "zlib";
-import type { ReadStream } from "fs";
-import { createWriteStream } from "fs";
-import type { Writable } from "stream";
+import type { ReadStream } from "node:fs";
+import type { Writable } from "node:stream";
+import type { DDS, TextureInfo } from "../handler/types";
+import type { Img } from "./img";
+import { Buffer } from "node:buffer";
+import { createWriteStream } from "node:fs";
+import zlib from "node:zlib";
 import { PNG } from "pngjs";
 import { ColorBits, CompressMode } from "../constants";
 import { ByteArray } from "../stream";
-import type { DDS, TextureInfo } from "../handler/types";
-import type { Img } from "./img";
 
 function read16BitColor(this: ReadStream, bits: ColorBits) {
   if (bits === ColorBits.ARGB_8888) {
@@ -105,7 +106,12 @@ function convertFromPalette(data: Buffer, palette: Buffer) {
   for (let i = 0; i < len; i++) {
     const index = data[i] % count;
     const color = palette.slice(index * 4, (index + 1) * 4);
-    buf.push(color);
+    buf.push(Buffer.from([
+      color[2], // R
+      color[1], // G
+      color[0], // B
+      color[3] // A
+    ]));
   }
   return Buffer.concat(buf);
 }
@@ -120,7 +126,7 @@ function convertArbgToRgba(data: Buffer) {
 }
 
 interface SpriteOptions extends Partial<Sprite> {
-  palettes?: Buffer[]
+  palettes?: Buffer[];
 }
 
 export class Sprite {

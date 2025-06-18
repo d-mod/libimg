@@ -1,7 +1,9 @@
-import type { Func } from "maybe-types";
+import type { Fn } from "maybe-types";
 import type { DefineType } from "./../constants/define";
+import { Buffer } from "node:buffer";
+
 /***
- @author kritsu
+ @author chizukicn
  @date 2019/12/8 23:06
  **/
 export class ByteArray {
@@ -28,7 +30,7 @@ export class ByteArray {
     this.#offset = 0;
   }
 
-  handle<R, T extends any[]>(callback: Func<R, T>, ...args: T): R {
+  handle<R, T extends any[]>(callback: Fn<R, T>, ...args: T): R {
     return callback.apply(this, args);
   }
 
@@ -40,7 +42,7 @@ export class ByteArray {
     return array;
   }
 
-  readObject<T extends Record<string, any> = {}>(define: Record<string, DefineType>, obj: T = {} as T) {
+  readObject<T extends Record<string, any> = object>(define: Record<string, DefineType>, obj: T = {} as T) {
     Object.entries(define).forEach(([key, value]) => obj[key as keyof T] = this[`read${value}`]() as any);
     return obj;
   }
