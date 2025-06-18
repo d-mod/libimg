@@ -1,8 +1,4 @@
 import { Buffer } from "node:buffer";
-/***
- @author chizukicn
- @date 2019/12/7 20:10
- **/
 
 export const NPK_MAGIC = "NeoplePack_Bill";
 

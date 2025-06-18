@@ -1,8 +1,3 @@
-/***
- @author chizukicn
- @date 2019/12/9 21:57
- **/
-
 export * from "./define";
 
 export * from "./magic";

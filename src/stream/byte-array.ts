@@ -2,10 +2,6 @@ import type { Fn } from "maybe-types";
 import type { DefineType } from "./../constants/define";
 import { Buffer } from "node:buffer";
 
-/***
- @author chizukicn
- @date 2019/12/8 23:06
- **/
 export class ByteArray {
   #offset = 0;
 

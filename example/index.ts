@@ -1,8 +1,3 @@
-/***
- @author chizukicn
- @date 2020/2/7 14:40
- **/
-
 import type { Img } from "../src/model/img";
 import { Merge } from "../src";
 import { find } from "./find";

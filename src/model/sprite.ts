@@ -3,7 +3,8 @@ import type { Writable } from "node:stream";
 import type { DDS, TextureInfo } from "../handler/types";
 import type { Img } from "./img";
 import { Buffer } from "node:buffer";
-import { createWriteStream } from "node:fs";
+import fs, { createWriteStream } from "node:fs";
+import path from "node:path";
 import zlib from "node:zlib";
 import { PNG } from "pngjs";
 import { ColorBits, CompressMode } from "../constants";
@@ -125,6 +126,17 @@ function convertArbgToRgba(data: Buffer) {
   return buf;
 }
 
+function _createWriteStream(target: string | Writable) {
+  if (typeof target === "string") {
+    const dir = path.dirname(target);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+    return createWriteStream(target);
+  }
+  return target;
+}
+
 interface SpriteOptions extends Partial<Sprite> {
   palettes?: Buffer[];
 }
@@ -214,14 +226,14 @@ export class Sprite {
     const width = this.width;
     const height = this.height;
     return new Promise((resolve, reject) => {
-      target = typeof target === "string" ? createWriteStream(target) : target;
+      const stream = _createWriteStream(target);
 
       const png = new PNG({
         width,
         height
       });
       png.data = data;
-      png.pack().pipe(target).on("finish", resolve).on("error", reject);
+      png.pack().pipe(stream).on("finish", resolve).on("error", reject);
     });
   }
 }

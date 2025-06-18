@@ -12,10 +12,6 @@ interface MergeItem {
   y: number;
 }
 
-/***
- @author chizukicn
- @date 2020/2/8 18:23
- **/
 export class Merge {
   private list: Img[] = [];
 

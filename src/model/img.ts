@@ -2,10 +2,6 @@ import type { Buffer } from "node:buffer";
 import type { DDS } from "../handler/types";
 import { ImgVersion } from "./../constants/index";
 
-/***
- @author chizukicn
- @date 2019/12/7 22:26
- **/
 import { Sprite } from "./sprite";
 
 export interface ImgOptions {

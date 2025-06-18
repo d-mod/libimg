@@ -7,10 +7,6 @@ import type { DDS, TextureInfo } from "./types";
 import { ColorBits, CompressMode, ImgVersion } from "../constants";
 import { DDS_HEADER, SPRITE_BODY, TEXTURE_INFO } from "../constants/define";
 
-/***
- @author chizukicn
- @date 2019/12/6 12:29
- **/
 function second(img: Img) {
   return function (this: ByteArray) {
     const sprites: Sprite[] = [];

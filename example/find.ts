@@ -1,8 +1,3 @@
-/***
- @author chizukicn
- @date 2019/12/6 12:27
- **/
-
 import type { Img } from "../src/model/img";
 
 import fs from "node:fs";
