@@ -25,7 +25,8 @@
     "lint": "eslint --cache",
     "bump": "bumpp package.json",
     "build": "tsdown",
-    "prepare": "simple-git-hooks"
+    "prepare": "simple-git-hooks",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "maybe-types": "^0.2.0",
