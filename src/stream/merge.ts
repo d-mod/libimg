@@ -1,20 +1,17 @@
+import type { Img } from "../model/img";
+import { Buffer } from "node:buffer";
 import { ColorBits, CompressMode, ImgVersion } from "../constants";
 import { Sprite } from "../model";
-import type { Img } from "../model/img";
 import queues from "./queues";
 
 interface MergeItem {
-  data: Buffer
-  width: number
-  height: number
-  x: number
-  y: number
+  data: Buffer;
+  width: number;
+  height: number;
+  x: number;
+  y: number;
 }
 
-/***
- @author kritsu
- @date 2020/2/8 18:23
- **/
 export class Merge {
   private list: Img[] = [];
 
@@ -39,7 +36,7 @@ export class Merge {
       }
     }
 
-    const sprites = new Array(count);
+    const sprites = Array.from({ length: count });
 
     for (let i = 0; i < count; i++) {
       let width = 1;
@@ -172,7 +169,7 @@ export function indexOf(key: string) {
       key = key.replace(matches[i], "");
       if (i > 0) {
         // 获取数字序号
-        suf = parseInt(matches[i]);
+        suf = Number.parseInt(matches[i]);
       }
     }
   }

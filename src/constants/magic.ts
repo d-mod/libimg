@@ -1,7 +1,5 @@
-/***
- @author kritsu
- @date 2019/12/7 20:10
- **/
+import { Buffer } from "node:buffer";
+
 export const NPK_MAGIC = "NeoplePack_Bill";
 
 export const IMG_MAGIC = "Neople Img File";

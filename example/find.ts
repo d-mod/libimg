@@ -1,21 +1,16 @@
-/***
- @author kritsu
- @date 2019/12/6 12:27
- **/
-
-import fs from "fs";
-
-import qs from "querystring";
-
-import path from "path";
-import { Extract } from "../src";
-
 import type { Img } from "../src/model/img";
+
+import fs from "node:fs";
+
+import path from "node:path";
+import qs from "node:querystring";
+
+import { Extract } from "../src";
 
 export function find(outputPath: string, profession: string, code: string, excludes: string[] = []) {
   const parts = qs.parse(code) as Record<string, string>;
 
-  excludes.forEach(e => delete parts[e]);
+  excludes.forEach((e) => delete parts[e]);
 
   const entries = Object.entries(parts);
 
@@ -37,7 +32,7 @@ export function find(outputPath: string, profession: string, code: string, exclu
       fs.createReadStream(path.resolve(outputPath, f))
         .pipe(new Extract({ match }))
         .on("finish", (list: Img[]) => {
-          list = list.map(e => {
+          list = list.map((e) => {
             const index = code1 % 100;
             e.path = replacePath(e.path, code1);
             e.paletteIndex = index;
@@ -47,7 +42,8 @@ export function find(outputPath: string, profession: string, code: string, exclu
           if (array.length === entries.length) {
             resolve(Array.from(array.flat()));
           }
-        }).on("error", e => {
+        })
+        .on("error", (e) => {
           reject(e);
         });
     });
@@ -70,7 +66,6 @@ function getDressFileName(profession: string, part: string, type = "avatar") {
   return `sprite_character_${profession}equipment_${type}_${part}.NPK`;
 }
 
-function getNumber(s) {
-  return parseInt(s.replace(/[^\d+]/ig, ""));
+function getNumber(s: string) {
+  return Number.parseInt(s.replace(/[^\d+]/g, ""));
 }
-

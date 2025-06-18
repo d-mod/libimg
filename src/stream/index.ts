@@ -1,8 +1,5 @@
-/***
- @author kritsu
- @date 2019/12/6 16:57
- **/
-export { Extract } from "./extract";
-export { Pack } from "./pack";
-export { Merge, indexOf as indexOfMergeQueue } from "./merge";
 export { ByteArray } from "./byte-array";
+
+export { Extract } from "./extract";
+export { indexOf as indexOfMergeQueue, Merge } from "./merge";
+export { Pack } from "./pack";

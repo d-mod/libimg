@@ -1,9 +1,10 @@
-import { Writable } from "stream";
 import type { MaybeRegex } from "maybe-types";
-import { Img } from "../model";
-import { createDecoder } from "../handler/decoder";
+import { Buffer } from "node:buffer";
+import { Writable } from "node:stream";
 import { IMG_HEADER } from "../constants/define";
 import { IMG_MAGIC, IMG_PATH_KEY, NPK_MAGIC } from "../constants/magic";
+import { createDecoder } from "../handler/decoder";
+import { Img } from "../model";
 import { ByteArray } from "./byte-array";
 
 function readPath(this: ByteArray) {
@@ -36,21 +37,21 @@ function readImg(this: ByteArray) {
 function validateMatch(match: MaybeRegex | ((item: Img) => boolean)) {
   if (match instanceof RegExp) {
     const regex = match;
-    match = item => regex.test(item.path);
+    match = (item) => regex.test(item.path);
   } else if (typeof match !== "function") {
     const pattern = match.toString();
-    match = item => new RegExp(pattern).test(item.path);
+    match = (item) => new RegExp(pattern).test(item.path);
   }
 
   return match;
 }
 
 interface ExtractOptions {
-  match?: MaybeRegex | ((item: Img) => boolean)
+  match?: MaybeRegex | ((item: Img) => boolean);
 }
 
 /***
- @author kritsu
+ @author chizukicn
  @date 2019/12/6 16:56
  **/
 export class Extract extends Writable {
@@ -61,9 +62,9 @@ export class Extract extends Writable {
   chunks: Buffer[];
 
   list: {
-    offset: number
-    length: number
-    path: string
+    offset: number;
+    length: number;
+    path: string;
   }[];
 
   constructor({ match }: ExtractOptions = {}) {
@@ -106,7 +107,7 @@ export class Extract extends Writable {
       );
     }
 
-    list = list.filter(item => this.match(item));
+    list = list.filter((item) => this.match(item));
 
     for (let i = 0; i < list.length; i++) {
       ms.reset(list[i].offset);

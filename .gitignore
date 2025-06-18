@@ -3,3 +3,6 @@ node_modules/
 dist/
 yarn-error.log
 test-data/
+.eslintcache
+*.NPK
+.DS_Store

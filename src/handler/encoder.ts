@@ -1,11 +1,8 @@
-/***
- @author kritsu
- @date 2019/12/8 11:48
- **/
-import { ColorBits, ImgVersion } from "../constants";
-import { SPRITE_BODY } from "../constants/define";
 import type { Img } from "../model";
 import type { Pack } from "../stream";
+
+import { ColorBits, ImgVersion } from "../constants";
+import { SPRITE_BODY } from "../constants/define";
 
 function second(item: Img) {
   return function (this: Pack) {

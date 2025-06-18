@@ -1,8 +1,3 @@
-/***
- @author kritsu
- @date 2019/12/6 16:27
- **/
-
 export const NUMBER = "Number" as const;
 
 export const STRING = "String" as const;

@@ -1,24 +1,24 @@
 {
-    "compilerOptions": {
-        "target": "esnext",
-        "module": "esnext",
-        "lib": ["esnext", "DOM"],
-        "moduleResolution": "node",
-        "esModuleInterop": true,
-        "strict": true,
-        "strictNullChecks": true,
-        "resolveJsonModule": true,
-        "skipDefaultLibCheck": true,
-        "outDir": "./dist",
-        "declaration": true,
-        "sourceMap": true,
-        "jsx": "preserve",
-        "paths": {
-            "libimg": ["./src/index.ts"],
-        }
+  "compilerOptions": {
+    "target": "esnext",
+    "jsx": "preserve",
+    "lib": ["esnext", "DOM"],
+    "module": "esnext",
+    "moduleResolution": "node",
+    "paths": {
+      "libimg": ["./src/index.ts"]
     },
-    "include": [
-		"./src/**/*"
-    ],
-    "exclude": ["node_modules", "dist"]
+    "resolveJsonModule": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "declaration": true,
+    "outDir": "./dist",
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "skipDefaultLibCheck": true
+  },
+  "include": [
+    "./src/**/*"
+  ],
+  "exclude": ["node_modules", "dist"]
 }
